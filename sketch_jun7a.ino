@@ -24,7 +24,7 @@ void setup() {
 int error = -1; 
 for (int i = 0; i < 10; i++) 
 {
-  delay(1000); 
+  
   error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, pressures, rumble); 
   Serial.print("."); 
   if(!error) 
@@ -34,59 +34,89 @@ pwm.begin(); //khởi tạo PCA9685
 pwm.setOscillatorFrequency(27000000); // cài đặt tần số dao động 
 pwm.setPWMFreq(50);
 Wire.setClock(400000);
+
+pwm.setPWM(8, 0,0);
+pwm.setPWM(9, 0,0);
+pwm.setPWM(10, 0,0);
+pwm.setPWM(11, 0,0);
+pwm.setPWM(12, 0,0);
+pwm.setPWM(13, 0,0);
+pwm.setPWM(14, 0,0);
+pwm.setPWM(15, 0,0);
+
 }
 void loop() {
+  int speed;
   ps2x.read_gamepad(false, false); 
-  Serial.print("Stick Values:"); 
-  Serial.print(ps2x.Analog(PSS_LY)); 
-  Serial.print(","); 
-  Serial.print("Stick Values:"); 
-  Serial.print(ps2x.Analog(PSS_RY));
-  Serial.print("\n");
-  float speed;
-  int sp;
-  const int spd_max = 2048;
-  if(ps2x.Analog(PSS_LY) >= 140){
-    float speed = (double)(ps2x.Analog(PSS_LY)-128)/128;
-    sp = speed*spd_max;
-    pwm.setPWM(11,0,sp-5);
-    pwm.setPWM(10 ,0, 0);
-
-
-  } else if (ps2x.Analog(PSS_LY) <=121)
-  { 
-    float speed = (double)abs(ps2x.Analog(PSS_LY)-128)/128;
-    sp = speed*spd_max;
-    pwm.setPWM(11,0,0);
-    pwm.setPWM(10 ,0, sp-5);
-
-   
-  } else{
-    pwm.setPWM(11,0,0);
-    pwm.setPWM(10 ,0, 0);
-  }
-  if(ps2x.Analog(PSS_RY)>= 140){
-    
-
-     float speed = (double)(ps2x.Analog(PSS_RY)-128)/128;
-    sp = speed*spd_max;
-    pwm.setPWM(14,0,sp-5);
-    pwm.setPWM(15 ,0, 0);
-
-
-  } else if (ps2x.Analog(PSS_RY) <=121)
-  {
-
-
-     float speed = (double)abs(ps2x.Analog(PSS_RY)-128)/128;
-    sp = speed*spd_max;
-    pwm.setPWM(14,0,0);
-    pwm.setPWM(15 ,0, sp-5);
-  } else{
-     
-    pwm.setPWM(14,0,0);
-    pwm.setPWM(15 ,0, 0);
-  }
-
-
+  if (ps2x.Button(PSB_L2)) // tương tự như trên kiểm tra nút Lên (L2) 
+{ 
+   Serial.print("L2 held this hard UP: ");     
+   Serial.println(ps2x.Analog(PSAB_L2)); // đọc giá trị analog ở nút   
 }
+ if(ps2x.Button(PSB_L2) == 0){
+   speed = 4090;
+ } else{
+   speed = 1000;
+ }
+ Serial.println(speed);
+
+ 
+   if (ps2x.Button(PSB_PAD_UP)) // tương tự như trên kiểm tra nút Lên (PAD UP) 
+{ 
+   Serial.print("Up held this hard UP: ");     
+   Serial.println(ps2x.Analog(PSAB_PAD_UP)); // đọc giá trị analog ở nút   
+   
+}
+   if (ps2x.Button(PSB_CROSS)) // tương tự như trên kiểm tra nút Lên (PAD x) 
+{ 
+   Serial.print("CROSS held this hard RIGHT : ");     
+   Serial.println(ps2x.Analog(PSAB_CROSS) ); // đọc giá trị analog ở nút  
+   
+}
+   if (ps2x.Button(PSB_PAD_DOWN)) // tương tự như trên kiểm tra nút Lên (PAD down) 
+{ 
+   Serial.print("Up held this hard DOWN: ");     
+   Serial.println(ps2x.Analog(PSAB_PAD_DOWN)); // đọc giá trị analog ở nút   
+   
+}
+ if (ps2x.Button(PSB_TRIANGLE)) // tương tự như trên kiểm tra nút Lên (PAD triangle) 
+{ 
+   Serial.print("TRIANGLE held this hard RIGHT : ");     
+   Serial.println(ps2x.Analog(PSAB_TRIANGLE) ); // đọc giá trị analog ở nút   
+   
+}
+
+  if(ps2x.Button(PSB_PAD_UP)){
+
+  
+    pwm.setPWM(12, 0, speed);
+    pwm.setPWM(13, 0, 0);
+}  
+if(ps2x.Button(PSB_PAD_DOWN)){
+
+  
+    pwm.setPWM(12, 0, 0);
+    pwm.setPWM(13, 0, speed);
+}  
+if (ps2x.Button(PSB_PAD_UP) ==0 and ps2x.Button(PSB_PAD_DOWN) ==0){
+    pwm.setPWM(12, 0, 0);
+    pwm.setPWM(13, 0, 0);
+}
+if(ps2x.Button(PSB_TRIANGLE)){
+
+  
+    pwm.setPWM(11, 0, speed);
+    pwm.setPWM(10, 0, 0);
+}  
+if(ps2x.Button(PSB_CROSS)){
+
+  
+    pwm.setPWM(11, 0, 0);
+    pwm.setPWM(10, 0, speed);
+}  
+if (ps2x.Button(PSB_TRIANGLE) ==0 and ps2x.Button(PSB_CROSS) ==0){
+    pwm.setPWM(11, 0, 0);
+    pwm.setPWM(10, 0, 0);
+}
+}
+  
