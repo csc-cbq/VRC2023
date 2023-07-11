@@ -48,6 +48,11 @@ void loop() {
     Serial.print("L2 held this hard UP: ");
     Serial.println(ps2x.Analog(PSAB_L2));  // đọc giá trị analog ở nút
   }
+  if (ps2x.Button(PSB_R2))  // tương tự như trên kiểm tra nút Lên (L2)
+  {
+    Serial.print("L2 held this hard UP: ");
+    Serial.println(ps2x.Analog(PSAB_L2));  // đọc giá trị analog ở nút
+  }
   if (ps2x.Button(PSB_L2) == 0) {
     speed = 4090;
   } else {
@@ -110,10 +115,18 @@ void loop() {
     pwm.setPWM(10, 0, 0);
   }
   if (ps2x.Button(PSB_R2) == 0){
-    pwm.setPWM(5, 0, 205);
+    pwm.writeMicroseconds(5, 2000); 
 
   } else{
-     pwm.setPWM(5, 0, 410);
+     pwm.writeMicroseconds(5, 1000); 
+  }
+  if (ps2x.Button(PSB_R2)) {
+    pwm.setPWM(14, 0, 500);
+    pwm.setPWM(15, 0, 0);
+  }
+  if(ps2x.Button(PSB_R2)==0 ) {
+    pwm.setPWM(14, 0, 0);
+    pwm.setPWM(15, 0, 0);
   }
 
 
