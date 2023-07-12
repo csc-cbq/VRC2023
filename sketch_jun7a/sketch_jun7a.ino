@@ -42,9 +42,9 @@ void setup() {
 }
 void loop() {
   ps2x.read_gamepad(false, false);
-  int speed = 1000;
+  int speed = 1200;
   if (ps2x.Button(PSB_L2)) {
-    speed = 300;
+    speed = 400;
   }
   Serial.println(speed);
 
@@ -70,7 +70,7 @@ void loop() {
     pwm.setPWM(11, 0, 0);
     pwm.setPWM(10, 0, 0);
   }
-  if (ps2x.Button(PSB_R2) == 0){
+  if (ps2x.Button(PSB_SQUARE) == 0){
     pwm.writeMicroseconds(5, 2000);
     
 
@@ -82,7 +82,7 @@ void loop() {
   if (ps2x.Button(PSB_R2)) {
 
 
-    pwm.setPWM(14, 0, 300);
+    pwm.setPWM(14, 0, 400);
     pwm.setPWM(15, 0, 0);
   } else{
     pwm.setPWM(14, 0, 0);
