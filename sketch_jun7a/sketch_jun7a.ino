@@ -102,7 +102,7 @@ void loop() {
   }
   if (ps2x.Button(PSB_CIRCLE)) {
     pwm.setPWM(14, 0, 0);
-    pwm.setPWM(15, 0, 3000);
+    pwm.setPWM(15, 0, 2000);
   }
 
 
