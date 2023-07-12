@@ -18,7 +18,7 @@ void setup() {
   //Kết nối với tay cầm bằng hàm ps2x.config_gamepad, thử kết nối lại trong vòng 10 lần nếu quá 10 lần không kết nối được với tay cầm thì sẽ dừng lại
 
   int error = -1;
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 100; i++) {
 
     error = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, pressures, rumble);
     Serial.print(".");
@@ -41,46 +41,12 @@ void setup() {
   pwm.setPWM(15, 0, 0);
 }
 void loop() {
-  int speed;
-
-  if (ps2x.Button(PSB_L2))  // tương tự như trên kiểm tra nút Lên (L2)
-  {
-    Serial.print("L2 held this hard UP: ");
-    Serial.println(ps2x.Analog(PSAB_L2));  // đọc giá trị analog ở nút
-  }
-  if (ps2x.Button(PSB_R2))  // tương tự như trên kiểm tra nút Lên (L2)
-  {
-    Serial.print("L2 held this hard UP: ");
-    Serial.println(ps2x.Analog(PSAB_L2));  // đọc giá trị analog ở nút
-  }
-  if (ps2x.Button(PSB_L2) == 0) {
-    speed = 4090;
-  } else {
-    speed = 1000;
+  ps2x.read_gamepad(false, false);
+  int speed = 4090;
+  if (ps2x.Button(PSB_L2)) {
+    speed = 300;
   }
   Serial.println(speed);
-
-
-  if (ps2x.Button(PSB_PAD_UP))  // tương tự như trên kiểm tra nút Lên (PAD UP)
-  {
-    Serial.print("Up held this hard UP: ");
-    Serial.println(ps2x.Analog(PSAB_PAD_UP));  // đọc giá trị analog ở nút
-  }
-  if (ps2x.Button(PSB_CROSS))  // tương tự như trên kiểm tra nút Lên (PAD x)
-  {
-    Serial.print("CROSS held this hard RIGHT : ");
-    Serial.println(ps2x.Analog(PSAB_CROSS));  // đọc giá trị analog ở nút
-  }
-  if (ps2x.Button(PSB_PAD_DOWN))  // tương tự như trên kiểm tra nút Lên (PAD down)
-  {
-    Serial.print("Up held this hard DOWN: ");
-    Serial.println(ps2x.Analog(PSAB_PAD_DOWN));  // đọc giá trị analog ở nút
-  }
-  if (ps2x.Button(PSB_TRIANGLE))  // tương tự như trên kiểm tra nút Lên (PAD triangle)
-  {
-    Serial.print("TRIANGLE held this hard RIGHT : ");
-    Serial.println(ps2x.Analog(PSAB_TRIANGLE));  // đọc giá trị analog ở nút
-  }
 
   if (ps2x.Button(PSB_PAD_UP)) {
 
@@ -115,17 +81,26 @@ void loop() {
     pwm.setPWM(10, 0, 0);
   }
   if (ps2x.Button(PSB_R2) == 0){
-    pwm.writeMicroseconds(5, 2000); 
+    pwm.writeMicroseconds(5, 2000);
+    
 
   } else{
-     pwm.writeMicroseconds(5, 1000); 
+    pwm.writeMicroseconds(5, 1500);
   }
-  if (ps2x.Button(PSB_R2)) {
-    pwm.setPWM(14, 0, 500);
+  if (ps2x.Button(PSB_R1)==0 and ps2x.Button(PSB_L1)==0) {
+    pwm.setPWM(14, 0, 0);
     pwm.setPWM(15, 0, 0);
   }
-  if(ps2x.Button(PSB_R2)==0 ) {
+  if (ps2x.Button(PSB_R1)) {
+
+
     pwm.setPWM(14, 0, 0);
+    pwm.setPWM(15, 0, 500);
+  }
+  if (ps2x.Button(PSB_L1)) {
+
+
+    pwm.setPWM(14, 0, 300);
     pwm.setPWM(15, 0, 0);
   }
 
