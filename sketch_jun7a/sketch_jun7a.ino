@@ -42,7 +42,7 @@ void setup() {
 }
 void loop() {
   ps2x.read_gamepad(false, false);
-  int speed = 4090;
+  int speed = 1000;
   if (ps2x.Button(PSB_L2)) {
     speed = 300;
   }
@@ -53,30 +53,20 @@ void loop() {
 
     pwm.setPWM(12, 0, speed);
     pwm.setPWM(13, 0, 0);
+    pwm.setPWM(11, 0, speed);
+    pwm.setPWM(10, 0, 0);
   }
   if (ps2x.Button(PSB_PAD_DOWN)) {
 
 
     pwm.setPWM(12, 0, 0);
     pwm.setPWM(13, 0, speed);
+     pwm.setPWM(11, 0, 0);
+    pwm.setPWM(10, 0, speed);
   }
   if (ps2x.Button(PSB_PAD_UP) == 0 and ps2x.Button(PSB_PAD_DOWN) == 0) {
     pwm.setPWM(12, 0, 0);
     pwm.setPWM(13, 0, 0);
-  }
-  if (ps2x.Button(PSB_TRIANGLE)) {
-
-
-    pwm.setPWM(11, 0, speed);
-    pwm.setPWM(10, 0, 0);
-  }
-  if (ps2x.Button(PSB_CROSS)) {
-
-
-    pwm.setPWM(11, 0, 0);
-    pwm.setPWM(10, 0, speed);
-  }
-  if (ps2x.Button(PSB_TRIANGLE) == 0 and ps2x.Button(PSB_CROSS) == 0) {
     pwm.setPWM(11, 0, 0);
     pwm.setPWM(10, 0, 0);
   }
@@ -87,23 +77,33 @@ void loop() {
   } else{
     pwm.writeMicroseconds(5, 1500);
   }
-  if (ps2x.Button(PSB_R1)==0 and ps2x.Button(PSB_L1)==0) {
-    pwm.setPWM(14, 0, 0);
-    pwm.setPWM(15, 0, 0);
-  }
-  if (ps2x.Button(PSB_R1)) {
 
-
-    pwm.setPWM(14, 0, 0);
-    pwm.setPWM(15, 0, 500);
-  }
-  if (ps2x.Button(PSB_L1)) {
+  
+  if (ps2x.Button(PSB_R2)) {
 
 
     pwm.setPWM(14, 0, 300);
     pwm.setPWM(15, 0, 0);
+  } else{
+    pwm.setPWM(14, 0, 0);
+    pwm.setPWM(15, 0, 300);
   }
-
+  if(ps2x.Button(PSB_PAD_RIGHT)){
+    pwm.setPWM(12, 0, speed);
+    pwm.setPWM(13, 0, 0);
+    pwm.setPWM(11, 0, 0);
+    pwm.setPWM(10, 0, speed);
+  }
+  if(ps2x.Button(PSB_PAD_LEFT)){
+    pwm.setPWM(12, 0, 0);
+    pwm.setPWM(13, 0, speed);
+    pwm.setPWM(11, 0, speed);
+    pwm.setPWM(10, 0, 0);
+  }
+  if (ps2x.Button(PSB_CIRCLE)) {
+    pwm.setPWM(14, 0, 0);
+    pwm.setPWM(15, 0, 3000);
+  }
 
 
 }
