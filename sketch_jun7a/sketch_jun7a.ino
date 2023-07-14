@@ -82,11 +82,11 @@ void loop() {
   if (ps2x.Button(PSB_R2)) {
 
 
-    pwm.setPWM(14, 0, 400);
+    pwm.setPWM(14, 0, 700);
     pwm.setPWM(15, 0, 0);
   } else{
     pwm.setPWM(14, 0, 0);
-    pwm.setPWM(15, 0, 300);
+    pwm.setPWM(15, 0, 600);
   }
   if(ps2x.Button(PSB_PAD_RIGHT)){
     pwm.setPWM(12, 0, speed);
