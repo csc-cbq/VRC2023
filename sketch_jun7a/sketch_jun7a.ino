@@ -12,11 +12,18 @@ PS2X ps2x;
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
+int quay = 0;
+int lapquay=0;
+int y=0;   
+
 void setup() {
   Serial.begin(115200);
 
   //Kết nối với tay cầm bằng hàm ps2x.config_gamepad, thử kết nối lại trong vòng 10 lần nếu quá 10 lần không kết nối được với tay cầm thì sẽ dừng lại
-
+  
+  
+    
+  
   int error = -1;
   for (int i = 0; i < 100; i++) {
 
@@ -42,23 +49,26 @@ void setup() {
 }
 void loop() {
   ps2x.read_gamepad(false, false);
-  int speed = 1200;
-  if (ps2x.Button(PSB_L2)) {
-    speed = 400;
+  if (ps2x.Button(PSB_L1) and ps2x.Button(PSB_R1)) {
+    lapquay += 1;
   }
-  Serial.println(speed);
-
-  if (ps2x.Button(PSB_PAD_UP)) {
-
-
+  else {
+    lapquay = 0;
+  }
+  if (lapquay > 100) {
+   quay = 2000;  
+  }
+  
+  Serial.println(lapquay);
+   Serial.println(quay);
+  int speed = 1200;
+  if (ps2x.Button(PSB_PAD_UP)) {  //toc do di
     pwm.setPWM(12, 0, speed);
     pwm.setPWM(13, 0, 0);
     pwm.setPWM(11, 0, speed);
     pwm.setPWM(10, 0, 0);
   }
-  if (ps2x.Button(PSB_PAD_DOWN)) {
-
-
+  if (ps2x.Button(PSB_PAD_DOWN)) {    //toc do lui
     pwm.setPWM(12, 0, 0);
     pwm.setPWM(13, 0, speed);
      pwm.setPWM(11, 0, 0);
@@ -70,43 +80,44 @@ void loop() {
     pwm.setPWM(11, 0, 0);
     pwm.setPWM(10, 0, 0);
   }
-  if (ps2x.Button(PSB_SQUARE) == 0){
+  if (ps2x.Button(PSB_CROSS) == 0){
     pwm.writeMicroseconds(5, 2000);
-    
-
   } else{
     pwm.writeMicroseconds(5, 1500);
   }
 
-  
-  if (ps2x.Button(PSB_R2)) {
-
-
-    pwm.setPWM(14, 0, 700);
+  if (ps2x.Button(PSB_R2)) {   //nha bong
+    pwm.setPWM(14, 0, 1000);
     pwm.setPWM(15, 0, 0);
-  } else{
+  }else{    //thu bong
     pwm.setPWM(14, 0, 0);
-    pwm.setPWM(15, 0, 600);
+    pwm.setPWM(15, 0, quay);
   }
-  if(ps2x.Button(PSB_PAD_RIGHT)){
+  if(ps2x.Button(PSB_PAD_RIGHT)){  //re phai
     pwm.setPWM(12, 0, speed);
     pwm.setPWM(13, 0, 0);
     pwm.setPWM(11, 0, 0);
     pwm.setPWM(10, 0, speed);
   }
-  if(ps2x.Button(PSB_PAD_LEFT)){
+  if(ps2x.Button(PSB_PAD_LEFT)){   //re trai
     pwm.setPWM(12, 0, 0);
     pwm.setPWM(13, 0, speed);
     pwm.setPWM(11, 0, speed);
     pwm.setPWM(10, 0, 0);
   }
-  if (ps2x.Button(PSB_CIRCLE)) {
+  if (ps2x.Button(PSB_CIRCLE)) {  //khan cap nha
     pwm.setPWM(14, 0, 0);
-    pwm.setPWM(15, 0, 2000);
+    pwm.setPWM(15, 0, 4000);
   }
-
-
+  if (ps2x.Button(PSB_TRIANGLE)) {      //khan cap thu
+    pwm.setPWM(14, 0, 4000);
+    pwm.setPWM(15, 0, 0);
+  }
+  
 }
+
+
+
 
 // #include <Wire.h>
 // #include <Adafruit_PWMServoDriver.h>
